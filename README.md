@@ -1,3 +1,19 @@
+# React Minimum Boilerplate
+As of December 16, 2021
+- react-create-app
+- typescript
+- dart-sass
+- eslint (airbnb + my few preference)
+- prettier (with my few preferences)
+
+## Basic Usage
+
+```shell
+$ git clone git@github.com:ts5h/react-minimum-boilerplate.git
+$ npm install
+$ npm start
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
