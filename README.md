@@ -9,10 +9,13 @@ As of December 16, 2021
 ## Basic Usage
 
 ```shell
+$ mkdir react-minimum-boilerplate
 $ git clone git@github.com:ts5h/react-minimum-boilerplate.git
 $ npm install
 $ npm start
 ```
+
+Customize and extend as you like.
 
 # Getting Started with Create React App
 
