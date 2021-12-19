@@ -2,7 +2,7 @@
 A React minimum practical boilerplate as of December 19, 2021
 - react-create-app
 - typescript
-- dart-sass
+- sass (dart-sass)
 - eslint (airbnb + my preferences *1)
 - prettier (with my few preferences *2)
 
