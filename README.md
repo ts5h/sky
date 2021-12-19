@@ -10,12 +10,11 @@ A React minimum practical boilerplate as of December 16, 2021
 *2 See `./.prettierrc.js`
 
 ## Basic Usage
-
 ```shell
 $ mkdir react-minimum-boilerplate
 $ git clone git@github.com:ts5h/react-minimum-boilerplate.git
 $ npm install
-$ npm start
+$ npm run start
 ```
 
 Customize and extend as you like.
