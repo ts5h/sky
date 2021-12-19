@@ -6,15 +6,25 @@ A React minimum practical boilerplate as of December 16, 2021
 - eslint (airbnb + my preferences *1)
 - prettier (with my few preferences *2)
 
-*1 See `./.eslintrc.js`
+*1 See `./.eslintrc.js`  
 *2 See `./.prettierrc.js`
 
 ## Basic Usage
+### Install
 ```shell
 $ mkdir react-minimum-boilerplate
 $ git clone git@github.com:ts5h/react-minimum-boilerplate.git
 $ npm install
 $ npm run start
+```
+### ESLint with fix
+```shell
+$ npm run lint:fix
+```
+
+### Prettier formatting
+```shell
+$ npm run format
 ```
 
 Customize and extend as you like.
