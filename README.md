@@ -1,5 +1,5 @@
 # React Minimum Boilerplate
-A React minimum practical boilerplate as of December 19, 2021
+A React minimum practical boilerplate as of February 12, 2022.
 - react-create-app
 - typescript
 - sass (dart-sass)
@@ -12,7 +12,6 @@ A React minimum practical boilerplate as of December 19, 2021
 ## Basic Usage
 ### Install & Run
 ```shell
-$ mkdir react-minimum-boilerplate
 $ git clone git@github.com:ts5h/react-minimum-boilerplate.git
 $ npm install
 $ npm run start
