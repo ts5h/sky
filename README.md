@@ -1,13 +1,5 @@
-# React Minimum Boilerplate
-A React minimum practical boilerplate as of February 12, 2022.
-- react-create-app
-- typescript
-- sass (dart-sass)
-- eslint (airbnb + my preferences *1)
-- prettier (with my few preferences *2)
-
-*1 See `./.eslintrc.js`  
-*2 See `./.prettierrc.js`
+# Sky - 2020
+Random images clopping and play drone sounds.
 
 ## Basic Usage
 ### Install & Run
