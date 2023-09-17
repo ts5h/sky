@@ -64,6 +64,7 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     'arrow-body-style': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
   settings: {
     'import/resolver': {
