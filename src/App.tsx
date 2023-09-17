@@ -1,8 +1,9 @@
-import React from 'react';
-import './scss/App.scss';
+import React from "react";
+import { Canvas } from "./components/Canvas";
+import "./scss/App.scss";
 
 export const App = () => (
   <div className="App">
-    <canvas id="canvas" />
+    <Canvas />
   </div>
 );
