@@ -10,8 +10,8 @@ import { useWindowSize } from "../hooks/useWindowSize";
 export const Sky: FC = () => {
   const { windowSize } = useWindowSize();
 
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const ctx = canvas.current?.getContext("2d");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctx = canvasRef.current?.getContext("2d");
 
   const requestRef: MutableRefObject<number | null> = useRef(null);
 
@@ -31,6 +31,6 @@ export const Sky: FC = () => {
   }, []);
 
   return (
-    <canvas ref={canvas} width={windowSize.width} height={windowSize.height} />
+    <canvas ref={canvasRef} width={windowSize.width} height={windowSize.height} />
   );
 };
