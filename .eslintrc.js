@@ -62,6 +62,7 @@ module.exports = {
         mjs: 'never',
       },
     ],
+    'import/prefer-default-export': 'off',
   },
   settings: {
     'import/resolver': {
