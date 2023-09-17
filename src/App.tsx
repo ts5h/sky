@@ -3,6 +3,6 @@ import './scss/App.scss';
 
 export const App = () => (
   <div className="App">
-    aaa
+    <canvas id="canvas" />
   </div>
 );
