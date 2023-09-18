@@ -81,6 +81,20 @@ export const useImages = () => {
       height: 0,
       loaded: false,
     },
+    {
+      imageUrl: `${publicUrl}/images/sky_10.jpg`,
+      image: new Image(),
+      width: 0,
+      height: 0,
+      loaded: false,
+    },
+    {
+      imageUrl: `${publicUrl}/images/sky_11.jpg`,
+      image: new Image(),
+      width: 0,
+      height: 0,
+      loaded: false,
+    },
   ]);
 
   useEffect(() => {
