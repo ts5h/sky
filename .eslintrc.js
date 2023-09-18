@@ -62,6 +62,11 @@ module.exports = {
         mjs: 'never',
       },
     ],
+    'import/prefer-default-export': 'off',
+    'arrow-body-style': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'no-plusplus': 'off',
   },
   settings: {
     'import/resolver': {
