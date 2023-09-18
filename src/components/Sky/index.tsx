@@ -58,7 +58,7 @@ export const Sky: FC = () => {
     );
 
     animationFrameIdRef.current = requestAnimationFrame(render);
-  }, []);
+  }, [windowSize, selectImage]);
 
   useEffect(() => {
     render();
@@ -67,13 +67,13 @@ export const Sky: FC = () => {
       if (animationFrameIdRef.current)
         cancelAnimationFrame(animationFrameIdRef.current);
     };
-  }, []);
+  }, [render]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={windowSize.width}
-      height={windowSize.height}
+      width={4000}
+      height={2500}
     />
   );
 };
