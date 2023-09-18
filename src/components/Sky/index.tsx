@@ -64,16 +64,11 @@ export const Sky: FC = () => {
     render();
 
     return () => {
-      if (animationFrameIdRef.current)
+      if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
+      }
     };
   }, [render]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      width={4000}
-      height={2500}
-    />
-  );
+  return <canvas ref={canvasRef} width={4000} height={2500} />;
 };
