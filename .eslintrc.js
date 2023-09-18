@@ -66,6 +66,7 @@ module.exports = {
     'arrow-body-style': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'no-plusplus': 'off',
   },
   settings: {
     'import/resolver': {

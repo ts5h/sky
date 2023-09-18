@@ -10,92 +10,19 @@ type Images = {
 
 export const useImages = () => {
   const publicUrl = process.env.PUBLIC_URL;
-  const [images, setImages] = useState<Images[]>([
-    {
-      imageUrl: `${publicUrl}/images/sky_00.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_01.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_02.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_03.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_04.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_05.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_06.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_07.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_08.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_09.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_10.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-    {
-      imageUrl: `${publicUrl}/images/sky_11.jpg`,
-      image: new Image(),
-      width: 0,
-      height: 0,
-      loaded: false,
-    },
-  ]);
+  const [images, setImages] = useState<Images[]>(() => {
+    const initialImages: Images[] = [];
+    for (let i = 0; i < 20; i++) {
+      initialImages.push({
+        imageUrl: `${publicUrl}/images/sky_${i.toString().padStart(2, "0")}.jpg`,
+        image: new Image(),
+        width: 0,
+        height: 0,
+        loaded: false,
+      });
+    }
+    return initialImages;
+  });
 
   useEffect(() => {
     images.forEach((image, index) => {
