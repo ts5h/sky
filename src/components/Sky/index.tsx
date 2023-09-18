@@ -8,39 +8,11 @@ import React, {
   useState,
 } from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
-
-type Images = {
-  imageUrl: string;
-  loaded: boolean;
-};
+import { useImages } from "../hooks/useImages";
 
 export const Sky: FC = () => {
   const { windowSize } = useWindowSize();
-
-  // Load images
-  const [images, setImages] = useState<Images[]>([
-    { imageUrl: "https://i.imgur.com/9QVXK0F.png", loaded: false },
-    { imageUrl: "https://i.imgur.com/9QVXK0F.png", loaded: false },
-    { imageUrl: "https://i.imgur.com/9QVXK0F.png", loaded: false },
-    { imageUrl: "https://i.imgur.com/9QVXK0F.png", loaded: false },
-  ]);
-
-  useEffect(() => {
-    images.forEach((image, index) => {
-      const img = new Image();
-      img.src = image.imageUrl;
-      img.onload = () => {
-        setImages((prevImages) => {
-          const updatedImages = [...prevImages];
-          updatedImages[index].loaded = true;
-          return updatedImages;
-        });
-      };
-      img.onerror = (e) => {
-        console.error(e);
-      };
-    });
-  }, []);
+  const { images } = useImages();
 
   // Draw images to canvas
   const canvasRef = useRef<HTMLCanvasElement>(null);
