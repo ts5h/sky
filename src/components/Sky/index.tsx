@@ -16,9 +16,7 @@ export const Sky: FC = () => {
   const { images } = useImages();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const animationFrameIdRef = useRef<number | null>(null);
-  const timerIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const selectImage = useCallback((): CloppedImage => {
     const index = Math.floor(Math.random() * images.length);
