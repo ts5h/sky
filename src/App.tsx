@@ -1,5 +1,5 @@
 import React from "react";
-import {ReturnToHome} from "./components/ReturnToHome";
+import { ReturnToHome } from "./components/ReturnToHome";
 import { Sky } from "./components/Sky";
 import "./scss/App.scss";
 

@@ -6,7 +6,11 @@ export const ReturnToHome: FC = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className={`${Styles.return} ${isHovered ? Styles.on : ""} ${isMobile ? Styles.mobile : ""}`}>
+    <div
+      className={`${Styles.return} ${isHovered ? Styles.on : ""} ${
+        isMobile ? Styles.mobile : ""
+      }`}
+    >
       <a
         href="/"
         className={`${Styles.link} ${isMobile ? Styles.mobile : ""}`}
