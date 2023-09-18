@@ -14,7 +14,9 @@ export const useImages = () => {
     const initialImages: Images[] = [];
     for (let i = 0; i < 20; i++) {
       initialImages.push({
-        imageUrl: `${publicUrl}/images/sky_${i.toString().padStart(2, "0")}.jpg`,
+        imageUrl: `${publicUrl}/images/sky_${i
+          .toString()
+          .padStart(2, "0")}.jpg`,
         image: new Image(),
         width: 0,
         height: 0,
