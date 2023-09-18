@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from "react";
 
-export const Sound: FC = () => {
+export const MarkovChainSound: FC = () => {
   const markovChainFreq = useMemo(
     () => [
       [0.7, 0.2, 0.1],
