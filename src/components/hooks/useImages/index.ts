@@ -34,8 +34,8 @@ export const useImages = () => {
         setImages((prevImages) => {
           const updatedImages = [...prevImages];
           updatedImages[index].image = img;
-          updatedImages[index].width = img.width;
-          updatedImages[index].height = img.height;
+          updatedImages[index].width = img.naturalWidth;
+          updatedImages[index].height = img.naturalHeight;
           updatedImages[index].loaded = true;
           return updatedImages;
         });
