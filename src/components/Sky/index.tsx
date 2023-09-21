@@ -40,6 +40,8 @@ export const Sky: FC = () => {
       return;
     }
 
+    const scale = Math.random() * 0.999 + 0.001;
+
     ctx.globalAlpha =
       Math.random() * 10 > 2
         ? Math.random() * 0.45 + 0.05
@@ -51,10 +53,10 @@ export const Sky: FC = () => {
       img.y,
       img.width,
       img.height,
-      Math.random() * windowSize.width - 100,
-      Math.random() * windowSize.height - 100,
-      img.width,
-      img.height
+      Math.random() * windowSize.width - 50,
+      Math.random() * windowSize.height - 50,
+      img.width * scale,
+      img.height * scale
     );
 
     animationFrameIdRef.current = requestAnimationFrame(render);
