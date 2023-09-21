@@ -23,8 +23,8 @@ export const Sky: FC = () => {
     const { image } = images[index];
     const loaded = image.complete;
 
-    const width = Math.floor(Math.random() * 250);
-    const height = Math.floor(Math.random() * 250);
+    const width = Math.floor(Math.random() * 250) + 1;
+    const height = Math.floor(Math.random() * 250) + 1;
     const x = Math.floor(Math.random() * (image.width - width));
     const y = Math.floor(Math.random() * (image.height - height));
 
@@ -35,7 +35,7 @@ export const Sky: FC = () => {
     const ctx = canvasRef.current?.getContext("2d");
     const img = selectImage();
 
-    if (!ctx || !img.loaded || img.width === 0 || img.height === 0) {
+    if (!ctx || !img.loaded) {
       render();
       return;
     }

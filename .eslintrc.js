@@ -67,6 +67,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'no-plusplus': 'off',
+    'react/jsx-no-useless-fragment': 'off',
   },
   settings: {
     'import/resolver': {
