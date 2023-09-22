@@ -25,6 +25,7 @@ specifiers:
   react-dom: ^18.2.0
   react-scripts: 5.0.1
   sass: ^1.67.0
+  tone: ^14.7.77
   typescript: ^5.2.2
   web-vitals: ^3.4.0
 
@@ -40,6 +41,7 @@ dependencies:
   react-device-detect: 2.2.3_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-scripts: 5.0.1_imy73paa37i6qyqbldqssjnnaa
+  tone: 14.7.77
   typescript: 5.2.2
   web-vitals: 3.4.0
 
@@ -3360,6 +3362,14 @@ packages:
   /at-least-node/1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
+    dev: false
+
+  /automation-events/6.0.9:
+    resolution: {integrity: sha512-JEJzZRfRb26FMWR8zE2D/H/n5n+NNFZh1BtmDcpZVJOhLYKLGFCImBuxChRBhpZaOyIxqobPtM839amAeu2H9g==}
+    engines: {node: '>=16.1.0'}
+    dependencies:
+      '@babel/runtime': 7.22.15
+      tslib: 2.6.2
     dev: false
 
   /autoprefixer/10.4.15_postcss@8.4.29:
@@ -9574,6 +9584,14 @@ packages:
     resolution: {integrity: sha512-oeVtt7eWQS+Na6F//S4kJ2K2VbRlS9D43mAlMyVpVWovy9o+jfgH8O9agzANzaiLjclA0oYzUXEM4PurhSUChw==}
     dev: false
 
+  /standardized-audio-context/25.3.56:
+    resolution: {integrity: sha512-f9pubvL/vilyGTQNa73dLX7bIa8V3XzBmKbfrgFF8Ac0EVdO2vIVQy9MSNDe/0pCot6ZxCxCzvVlHnEVHl8nRQ==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+      automation-events: 6.0.9
+      tslib: 2.6.2
+    dev: false
+
   /static-eval/2.0.2:
     resolution: {integrity: sha512-N/D219Hcr2bPjLxPiV+TQE++Tsmrady7TqAJugLy7Xk1EumfDWS/f5dtBbkRCGE7wKKXuYockQoj8Rm2/pVKyg==}
     dependencies:
@@ -10002,6 +10020,13 @@ packages:
   /toidentifier/1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+    dev: false
+
+  /tone/14.7.77:
+    resolution: {integrity: sha512-tCfK73IkLHyzoKUvGq47gyDyxiKLFvKiVCOobynGgBB9Dl0NkxTM2p+eRJXyCYrjJwy9Y0XCMqD3uOYsYt2Fdg==}
+    dependencies:
+      standardized-audio-context: 25.3.56
+      tslib: 2.6.2
     dev: false
 
   /tough-cookie/4.1.3:
