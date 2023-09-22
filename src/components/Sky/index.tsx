@@ -23,8 +23,8 @@ export const Sky: FC = () => {
     const { image } = images[index];
     const loaded = image.complete;
 
-    const width = Math.floor(Math.random() * 250);
-    const height = Math.floor(Math.random() * 250);
+    const width = Math.floor(Math.random() * 250) + 1;
+    const height = Math.floor(Math.random() * 250) + 1;
     const x = Math.floor(Math.random() * (image.width - width));
     const y = Math.floor(Math.random() * (image.height - height));
 
@@ -35,10 +35,12 @@ export const Sky: FC = () => {
     const ctx = canvasRef.current?.getContext("2d");
     const img = selectImage();
 
-    if (!ctx || !img.loaded || img.width === 0 || img.height === 0) {
+    if (!ctx || !img.loaded) {
       render();
       return;
     }
+
+    const scale = Math.random() * 0.999 + 0.001;
 
     ctx.globalAlpha =
       Math.random() * 10 > 2
@@ -51,10 +53,10 @@ export const Sky: FC = () => {
       img.y,
       img.width,
       img.height,
-      Math.random() * windowSize.width - 100,
-      Math.random() * windowSize.height - 100,
-      img.width,
-      img.height
+      Math.random() * windowSize.width - 50,
+      Math.random() * windowSize.height - 50,
+      img.width * scale,
+      img.height * scale
     );
 
     animationFrameIdRef.current = requestAnimationFrame(render);
