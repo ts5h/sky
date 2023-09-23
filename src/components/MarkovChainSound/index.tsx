@@ -1,12 +1,19 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef } from "react";
-import Tone from "tone";
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import * as Tone from "tone";
 
-Tone.Transport.bpm.value = 90;
+Tone.Transport.bpm.value = 84;
 
 const markovChainFreq = [
-  ["C4", "D4", "E4"],
-  ["F4", "G4", "A4"],
-  ["B4", "C5", "D5"],
+  ["C3", "D3", "E3"],
+  ["F3", "G3", "A3"],
+  ["B3", "C4", "D4"],
 ];
 
 const markovChainDur = [
@@ -22,7 +29,18 @@ const markovChainRest = [
 ];
 
 export const MarkovChainSound: FC = () => {
-  const synth = useMemo(() => new Tone.Synth().toDestination(), []);
+  const [isStarted, setIsStarted] = useState(false);
+  const synth = useMemo(
+    () =>
+      new Tone.PolySynth(Tone.Synth, {
+        envelope: {
+          // attack: 0.5 * Tone.Transport.bpm.value / 60,
+          release: (2 * Tone.Transport.bpm.value) / 60,
+        },
+        volume: -0.01,
+      }).toDestination(),
+    []
+  );
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
@@ -42,8 +60,15 @@ export const MarkovChainSound: FC = () => {
   );
 
   const playNote = useCallback(() => {
+    if (synth.disposed) return;
+
     const noteIndex = getNextIndex(currentNoteIndex.current, markovChainFreq);
-    const nextNote = choose(markovChainFreq[noteIndex]);
+    const rootNote = choose(markovChainFreq[noteIndex]);
+
+    const minorThird = Tone.Frequency(rootNote).transpose(3).toNote();
+    const perfectFifth = Tone.Frequency(rootNote).transpose(7).toNote();
+    const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
+    const chord = [rootNote, minorThird, perfectFifth, minorSeventh];
 
     const durIndex = getNextIndex(currentDurIndex.current, markovChainDur);
     const nextDur = choose(markovChainDur[durIndex]);
@@ -51,25 +76,55 @@ export const MarkovChainSound: FC = () => {
     const restIndex = Math.floor(Math.random() * markovChainRest.length);
     const shouldRest = Math.random() > markovChainRest[restIndex];
 
-    if (!shouldRest) {
-      synth.triggerAttackRelease(nextNote, nextDur);
-    }
+    // if (!shouldRest) {
+    //   synth.triggerAttackRelease(chord, nextDur);
+    // }
 
-    Tone.Transport.scheduleOnce(playNote, `+${Tone.Time(nextDur).toSeconds()}`);
+    synth.triggerAttackRelease(chord, nextDur);
+
+    if (Tone.Transport.state === "started") {
+      Tone.Transport.scheduleOnce(
+        playNote,
+        `+${Tone.Time(nextDur).toSeconds()}`
+      );
+    }
 
     currentNoteIndex.current = noteIndex;
     currentDurIndex.current = durIndex;
-  }, [synth, getNextIndex]);
+  }, [getNextIndex]);
+
+  const handleClick = () => {
+    if (!isStarted) {
+      Tone.start()
+        .then(() => {
+          Tone.Transport.start();
+          setIsStarted(true);
+          playNote();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   useEffect(() => {
-    Tone.Transport.start();
-    playNote();
-
     return () => {
       Tone.Transport.stop();
-      synth.dispose();
     };
-  }, [playNote, synth]);
+  }, []);
 
-  return null;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: "0",
+        top: "100px",
+        zIndex: 2,
+      }}
+    >
+      <button type="button" onClick={handleClick}>
+        Start
+      </button>
+    </div>
+  );
 };
