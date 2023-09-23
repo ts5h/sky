@@ -81,15 +81,7 @@ export const Sky: FC = () => {
       );
     }
 
-    // Add noises
-    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.1})`;
-    ctx.fillRect(
-      0,
-      Math.random() * canvasSize.height,
-      canvasSize.width,
-      Math.random() * 100
-    );
-
+    // Add line noises
     ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.4})`;
     ctx.fillRect(0, Math.random() * canvasSize.height, canvasSize.width, 1);
 
