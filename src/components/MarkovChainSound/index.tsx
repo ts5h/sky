@@ -51,7 +51,7 @@ export const MarkovChainSound: FC = () => {
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: 3 * coefficient,
+        decay: 2 * coefficient,
         wet: 0.9,
       }).toDestination(),
     []
