@@ -9,6 +9,7 @@ import React, {
 import * as Tone from "tone";
 
 Tone.Transport.bpm.value = 84;
+const coefficient = Tone.Transport.bpm.value / 60;
 
 // C# minor
 const markovChainFreq = [
@@ -35,11 +36,11 @@ export const MarkovChainSound: FC = () => {
   const synth = useMemo(
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
-        modulationIndex: 1.5,
+        modulationIndex: 0.4,
         harmonicity: 1.95,
         envelope: {
-          attack: (0.25 * Tone.Transport.bpm.value) / 60,
-          release: (2 * Tone.Transport.bpm.value) / 60,
+          attack: 0.25 * coefficient,
+          release: 2.0 * coefficient,
         },
         volume: 0,
       }),
@@ -49,7 +50,7 @@ export const MarkovChainSound: FC = () => {
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: (2 * Tone.Transport.bpm.value) / 60,
+        decay: 2.0 * coefficient,
         wet: 0.9,
       }).toDestination(),
     []
