@@ -23,29 +23,32 @@ const markovChainDur = [
   ["1m", "2n", "4n"],
 ];
 
-const markovChainRest = [
-  0.9, // 10% chance of a rest
-  0.85, // 15% chance of a rest
-  0.8, // 20% chance of a rest
+const transitionProbabilities = [
+  [0.8, 0.2, 0.0],
+  [0.1, 0.7, 0.2],
+  [0.2, 0.3, 0.5],
 ];
 
 export const MarkovChainSound: FC = () => {
   const [isStarted, setIsStarted] = useState(false);
+
   const synth = useMemo(
     () =>
-      new Tone.PolySynth(Tone.Synth, {
+      new Tone.PolySynth(Tone.FMSynth, {
+        modulationIndex: 1.5,
+        harmonicity: 1.95,
         envelope: {
-          attack: 0.02,
+          attack: 0.25 * Tone.Transport.bpm.value / 60,
           release: (2 * Tone.Transport.bpm.value) / 60,
         },
-        volume: -0.05,
+        volume: 0,
       }),
     []
   );
 
   const reverb = useMemo(() => new Tone.Reverb({
     decay: 2 * Tone.Transport.bpm.value / 60,
-    wet: 0.75,
+    wet: 0.9,
   }).toDestination(), []);
   synth.connect(reverb);
 
@@ -58,31 +61,33 @@ export const MarkovChainSound: FC = () => {
   }, []);
 
   const getNextIndex = useCallback(
-    (currentIndex: number, chain: string[][]): number => {
-      const probs = chain[currentIndex];
-      const rand = choose(probs);
-      return probs.indexOf(rand);
+    (currentIndex: number): number => {
+      const rand = Math.random();
+      const cdf = transitionProbabilities[currentIndex].map((p, i, arr) =>
+        arr.slice(0, i + 1).reduce((acc, val) => acc + val)
+      );
+
+      return cdf.findIndex(p => rand < p);
     },
-    [choose]
+    []
   );
 
   const playNote = useCallback(() => {
     if (synth.disposed) return;
 
-    const noteIndex = getNextIndex(currentNoteIndex.current, markovChainFreq);
+    const noteIndex = getNextIndex(currentNoteIndex.current);
     const rootNote = choose(markovChainFreq[noteIndex]);
 
     const minorThird = Tone.Frequency(rootNote).transpose(3).toNote();
     const perfectFifth = Tone.Frequency(rootNote).transpose(7).toNote();
-    // const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
+    const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
     const minorNinth = Tone.Frequency(rootNote).transpose(14).toNote();
-    const chord = [rootNote, minorThird, perfectFifth, minorNinth];
+    const chord = [rootNote, minorThird, minorSeventh, perfectFifth, minorNinth];
 
-    const durIndex = getNextIndex(currentDurIndex.current, markovChainDur);
+    const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDur[durIndex]);
 
-    const restIndex = Math.floor(Math.random() * markovChainRest.length);
-    const shouldRest = Math.random() > markovChainRest[restIndex];
+    const shouldRest = Math.random() > 0.9;
 
     if (!shouldRest) {
       synth.triggerAttackRelease(chord, nextDur);
@@ -129,7 +134,7 @@ export const MarkovChainSound: FC = () => {
       }}
     >
       <button type="button" onClick={handleClick}>
-        start
+        Start
       </button>
     </div>
   );
