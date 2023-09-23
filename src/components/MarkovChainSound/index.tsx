@@ -11,15 +11,10 @@ import * as Tone from "tone";
 Tone.Transport.bpm.value = 84;
 
 // C# minor
-// const markovChainFreq = [
-//   ["C#3", "D#3", "E3"],
-//   ["F#3", "G#3", "A3"],
-//   ["B2", "C#3", "D#3"],
-// ];
 const markovChainFreq = [
-  ["C#3", "E3", "G3"],
-  ["B2", "C#3", "E3"],
-  ["G3", "B2", "C#3"],
+  ["C#3", "D#3", "E3"],
+  ["F#3", "G#3", "A3"],
+  ["B2", "C#3", "D#3"],
 ];
 
 const markovChainDur = [
@@ -43,7 +38,7 @@ export const MarkovChainSound: FC = () => {
           attack: 0.02,
           release: (2 * Tone.Transport.bpm.value) / 60,
         },
-        volume: -0.1,
+        volume: -0.05,
       }),
     []
   );
