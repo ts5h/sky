@@ -1,4 +1,4 @@
-# Sky - 2020
+# Sky - from 2020 to current
 Random images clopping and play drone sounds.
 
 ## Basic Usage

@@ -7,7 +7,7 @@ import "./scss/App.scss";
 export const App = () => (
   <div className="App">
     <ReturnToHome />
-    <MarkovChainSound />
     <Sky />
+    <MarkovChainSound />
   </div>
 );

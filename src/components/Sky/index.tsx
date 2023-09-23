@@ -11,6 +11,20 @@ type CloppedImage = {
   height: number;
 };
 
+const boxMullerTransform = () => {
+  let u = 0;
+  let v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+};
+
+const generateLogNormalRandom = (mean: number, std: number) => {
+  const normalRandom = boxMullerTransform() * std + mean;
+  return Math.exp(normalRandom);
+};
+
 export const Sky: FC = () => {
   const { windowSize } = useWindowSize();
   const { images } = useImages();
@@ -23,8 +37,8 @@ export const Sky: FC = () => {
     const { image } = images[index];
     const loaded = image.complete;
 
-    const width = Math.floor(Math.random() * 250) + 1;
-    const height = Math.floor(Math.random() * 250) + 1;
+    const width = Math.floor(Math.random() * 500) + 1;
+    const height = Math.floor(Math.random() * 500) + 1;
     const x = Math.floor(Math.random() * (image.width - width));
     const y = Math.floor(Math.random() * (image.height - height));
 
@@ -40,12 +54,12 @@ export const Sky: FC = () => {
       return;
     }
 
-    const scale = Math.random() * 0.999 + 0.001;
+    const scale = generateLogNormalRandom(0.2, 0.65) * 0.1;
 
     ctx.globalAlpha =
-      Math.random() * 10 > 2
+      Math.random() * 10 > 1
         ? Math.random() * 0.45 + 0.05
-        : Math.random() * 0.85 + 0.05;
+        : Math.random() * 0.9 + 0.05;
 
     ctx.drawImage(
       img.image,
@@ -58,6 +72,8 @@ export const Sky: FC = () => {
       img.width * scale,
       img.height * scale
     );
+
+    ctx.globalAlpha = 1.0;
 
     animationFrameIdRef.current = requestAnimationFrame(render);
   }, [windowSize, selectImage]);

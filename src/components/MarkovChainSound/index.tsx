@@ -18,7 +18,7 @@ const markovChainFreq = [
   ["B2", "C#3", "D#3"],
 ];
 
-const markovChainDur = [
+const markovChainDuration = [
   ["8n", "4n", "2n"],
   ["16n", "8t", "4n"],
   ["1m", "2n", "4n"],
@@ -36,13 +36,14 @@ export const MarkovChainSound: FC = () => {
   const synth = useMemo(
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
-        modulationIndex: 0.4,
-        harmonicity: 1.95,
         envelope: {
           attack: 0.25 * coefficient,
           release: 2.0 * coefficient,
         },
-        volume: 0,
+        modulationIndex: 0.2,
+        harmonicity: 2,
+        portamento: 0.125 * coefficient,
+        volume: -1,
       }),
     []
   );
@@ -50,7 +51,7 @@ export const MarkovChainSound: FC = () => {
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: 2.0 * coefficient,
+        decay: 3 * coefficient,
         wet: 0.9,
       }).toDestination(),
     []
@@ -80,25 +81,23 @@ export const MarkovChainSound: FC = () => {
     const noteIndex = getNextIndex(currentNoteIndex.current);
     const rootNote = choose(markovChainFreq[noteIndex]);
 
-    const minorThird = Tone.Frequency(rootNote).transpose(3).toNote();
-    const perfectFifth = Tone.Frequency(rootNote).transpose(7).toNote();
-    const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
-    const minorNinth = Tone.Frequency(rootNote).transpose(14).toNote();
-    const chord = [
-      rootNote,
-      minorThird,
-      minorSeventh,
-      perfectFifth,
-      minorNinth,
-    ];
-
     const durIndex = getNextIndex(currentDurIndex.current);
-    const nextDur = choose(markovChainDur[durIndex]);
+    const nextDur = choose(markovChainDuration[durIndex]);
 
     const shouldRest = Math.random() > 0.9;
 
     if (!shouldRest) {
-      synth.triggerAttackRelease(chord, nextDur);
+      synth.triggerAttackRelease(
+        // Minor 11th flat 7
+        [
+          rootNote,
+          Tone.Frequency(rootNote).transpose(3).toNote(),
+          Tone.Frequency(rootNote).transpose(7).toNote(),
+          Tone.Frequency(rootNote).transpose(10).toNote(),
+          Tone.Frequency(rootNote).transpose(14).toNote(),
+        ],
+        nextDur
+      );
     }
 
     if (Tone.Transport.state === "started") {
