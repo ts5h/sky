@@ -25,6 +25,11 @@ const generateLogNormalRandom = (mean: number, std: number) => {
   return Math.exp(normalRandom);
 };
 
+const canvasSize = {
+  width: 4000,
+  height: 2500,
+};
+
 export const Sky: FC = () => {
   const { windowSize } = useWindowSize();
   const { images } = useImages();
@@ -53,13 +58,14 @@ export const Sky: FC = () => {
       return;
     }
 
-    for (let i = 0; i < 2; i++) {
+    const repeat = Math.floor(Math.random() * 5) + 1;
+    for (let i = 0; i < repeat; i++) {
       const img = selectImage();
       const scale = generateLogNormalRandom(0.1, 0.7) * 0.1;
 
       ctx.globalAlpha =
-        Math.random() * 10 > 1
-          ? Math.random() * 0.45 + 0.05
+        Math.random() * 10 > 2
+          ? Math.random() * 0.55 + 0.05
           : Math.random() * 0.9 + 0.05;
 
       ctx.drawImage(
@@ -73,16 +79,21 @@ export const Sky: FC = () => {
         img.width * scale,
         img.height * scale
       );
-
-      // Add line noises
-      if (Math.floor(Math.random() * 10) === 1) {
-        ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5})`;
-        ctx.fillRect(0, Math.random() * windowSize.height, windowSize.width, 1);
-      }
     }
 
-    ctx.globalAlpha = 1.0;
+    // Add noises
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.1})`;
+    ctx.fillRect(
+      0,
+      Math.random() * canvasSize.height,
+      canvasSize.width,
+      Math.random() * 100
+    );
 
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.4})`;
+    ctx.fillRect(0, Math.random() * canvasSize.height, canvasSize.width, 1);
+
+    ctx.globalAlpha = 1.0;
     animationFrameIdRef.current = requestAnimationFrame(render);
   }, [windowSize, selectImage]);
 
@@ -96,5 +107,11 @@ export const Sky: FC = () => {
     };
   }, [render]);
 
-  return <canvas ref={canvasRef} width={4000} height={2500} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      width={canvasSize.width}
+      height={canvasSize.height}
+    />
+  );
 };
