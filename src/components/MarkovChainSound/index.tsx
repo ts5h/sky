@@ -40,7 +40,7 @@ export const MarkovChainSound: FC = () => {
           attack: 0.25 * coefficient,
           release: 2.0 * coefficient,
         },
-        modulationIndex: 1.5,
+        modulationIndex: 0.8,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
         volume: -1,
