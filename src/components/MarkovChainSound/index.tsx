@@ -9,7 +9,7 @@ import React, {
 import * as Tone from "tone";
 
 Tone.Transport.bpm.value = 84;
-const coefficient = Tone.Transport.bpm.value / 60;
+const coefficient = 60 / Tone.Transport.bpm.value;
 
 // C# minor
 const markovChainFreq = [
