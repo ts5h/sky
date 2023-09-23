@@ -10,10 +10,16 @@ import * as Tone from "tone";
 
 Tone.Transport.bpm.value = 84;
 
+// C# minor
+// const markovChainFreq = [
+//   ["C#3", "D#3", "E3"],
+//   ["F#3", "G#3", "A3"],
+//   ["B2", "C#3", "D#3"],
+// ];
 const markovChainFreq = [
-  ["C3", "D3", "E3"],
-  ["F3", "G3", "A3"],
-  ["B3", "C4", "D4"],
+  ["C#3", "E3", "G3"],
+  ["B2", "C#3", "E3"],
+  ["G3", "B2", "C#3"],
 ];
 
 const markovChainDur = [
@@ -34,13 +40,19 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PolySynth(Tone.Synth, {
         envelope: {
-          // attack: 0.5 * Tone.Transport.bpm.value / 60,
+          attack: 0.02,
           release: (2 * Tone.Transport.bpm.value) / 60,
         },
-        volume: -0.01,
-      }).toDestination(),
+        volume: -0.1,
+      }),
     []
   );
+
+  const reverb = useMemo(() => new Tone.Reverb({
+    decay: 2 * Tone.Transport.bpm.value / 60,
+    wet: 0.75,
+  }).toDestination(), []);
+  synth.connect(reverb);
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
@@ -67,8 +79,9 @@ export const MarkovChainSound: FC = () => {
 
     const minorThird = Tone.Frequency(rootNote).transpose(3).toNote();
     const perfectFifth = Tone.Frequency(rootNote).transpose(7).toNote();
-    const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
-    const chord = [rootNote, minorThird, perfectFifth, minorSeventh];
+    // const minorSeventh = Tone.Frequency(rootNote).transpose(10).toNote();
+    const minorNinth = Tone.Frequency(rootNote).transpose(14).toNote();
+    const chord = [rootNote, minorThird, perfectFifth, minorNinth];
 
     const durIndex = getNextIndex(currentDurIndex.current, markovChainDur);
     const nextDur = choose(markovChainDur[durIndex]);
@@ -76,11 +89,9 @@ export const MarkovChainSound: FC = () => {
     const restIndex = Math.floor(Math.random() * markovChainRest.length);
     const shouldRest = Math.random() > markovChainRest[restIndex];
 
-    // if (!shouldRest) {
-    //   synth.triggerAttackRelease(chord, nextDur);
-    // }
-
-    synth.triggerAttackRelease(chord, nextDur);
+    if (!shouldRest) {
+      synth.triggerAttackRelease(chord, nextDur);
+    }
 
     if (Tone.Transport.state === "started") {
       Tone.Transport.scheduleOnce(
@@ -123,7 +134,7 @@ export const MarkovChainSound: FC = () => {
       }}
     >
       <button type="button" onClick={handleClick}>
-        Start
+        start
       </button>
     </div>
   );
