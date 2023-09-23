@@ -37,8 +37,8 @@ export const Sky: FC = () => {
     const { image } = images[index];
     const loaded = image.complete;
 
-    const width = Math.floor(Math.random() * 500) + 1;
-    const height = Math.floor(Math.random() * 500) + 1;
+    const width = Math.floor(Math.random() * 400) + 1;
+    const height = Math.floor(Math.random() * 400) + 1;
     const x = Math.floor(Math.random() * (image.width - width));
     const y = Math.floor(Math.random() * (image.height - height));
 
@@ -54,7 +54,7 @@ export const Sky: FC = () => {
       return;
     }
 
-    const scale = generateLogNormalRandom(0.2, 0.65) * 0.1;
+    const scale = generateLogNormalRandom(0.2, 0.55) * 0.1;
 
     ctx.globalAlpha =
       Math.random() * 10 > 1
@@ -74,6 +74,12 @@ export const Sky: FC = () => {
     );
 
     ctx.globalAlpha = 1.0;
+
+    // Add line noises
+    if (Math.floor(Math.random() * 30) === 1) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.2})`;
+      ctx.fillRect(0, Math.random() * windowSize.height, windowSize.width, 1);
+    }
 
     animationFrameIdRef.current = requestAnimationFrame(render);
   }, [windowSize, selectImage]);

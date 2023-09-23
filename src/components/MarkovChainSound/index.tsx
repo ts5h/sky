@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import * as Tone from "tone";
 
-Tone.Transport.bpm.value = 84;
+Tone.Transport.bpm.value = 82;
 const coefficient = 60 / Tone.Transport.bpm.value;
 
 // C# minor
@@ -40,7 +40,7 @@ export const MarkovChainSound: FC = () => {
           attack: 0.25 * coefficient,
           release: 2.0 * coefficient,
         },
-        modulationIndex: 0.2,
+        modulationIndex: 1.5,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
         volume: -1,
