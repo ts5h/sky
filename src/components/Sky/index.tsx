@@ -11,6 +11,20 @@ type CloppedImage = {
   height: number;
 };
 
+const boxMullerTransform = () => {
+  let u = 0;
+  let v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+};
+
+const generateLogNormalRandom = (mean: number, std: number) => {
+  const normalRandom = boxMullerTransform() * std + mean;
+  return Math.exp(normalRandom);
+};
+
 export const Sky: FC = () => {
   const { windowSize } = useWindowSize();
   const { images } = useImages();
@@ -23,8 +37,8 @@ export const Sky: FC = () => {
     const { image } = images[index];
     const loaded = image.complete;
 
-    const width = Math.floor(Math.random() * 250) + 1;
-    const height = Math.floor(Math.random() * 250) + 1;
+    const width = Math.floor(Math.random() * 400) + 1;
+    const height = Math.floor(Math.random() * 400) + 1;
     const x = Math.floor(Math.random() * (image.width - width));
     const y = Math.floor(Math.random() * (image.height - height));
 
@@ -33,31 +47,41 @@ export const Sky: FC = () => {
 
   const render = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
-    const img = selectImage();
 
-    if (!ctx || !img.loaded) {
+    if (!ctx) {
       render();
       return;
     }
 
-    const scale = Math.random() * 0.999 + 0.001;
+    for (let i = 0; i < 2; i++) {
+      const img = selectImage();
+      const scale = generateLogNormalRandom(0.1, 0.7) * 0.1;
 
-    ctx.globalAlpha =
-      Math.random() * 10 > 2
-        ? Math.random() * 0.45 + 0.05
-        : Math.random() * 0.85 + 0.05;
+      ctx.globalAlpha =
+        Math.random() * 10 > 1
+          ? Math.random() * 0.45 + 0.05
+          : Math.random() * 0.9 + 0.05;
 
-    ctx.drawImage(
-      img.image,
-      img.x,
-      img.y,
-      img.width,
-      img.height,
-      Math.random() * windowSize.width - 50,
-      Math.random() * windowSize.height - 50,
-      img.width * scale,
-      img.height * scale
-    );
+      ctx.drawImage(
+        img.image,
+        img.x,
+        img.y,
+        img.width,
+        img.height,
+        Math.random() * windowSize.width - 50,
+        Math.random() * windowSize.height - 50,
+        img.width * scale,
+        img.height * scale
+      );
+
+      // Add line noises
+      if (Math.floor(Math.random() * 10) === 1) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5})`;
+        ctx.fillRect(0, Math.random() * windowSize.height, windowSize.width, 1);
+      }
+    }
+
+    ctx.globalAlpha = 1.0;
 
     animationFrameIdRef.current = requestAnimationFrame(render);
   }, [windowSize, selectImage]);
