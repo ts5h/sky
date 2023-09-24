@@ -11,34 +11,23 @@ import * as Tone from "tone";
 Tone.Transport.bpm.value = 84;
 const coefficient = 60 / Tone.Transport.bpm.value;
 
+// C# minor
 const markovChainFreq = [
-  ["C#3", "A#2", "F#3", "D#3"],
-  ["F#3", "A#3", "C#4", "D#3"],
-  ["D#3", "A#3", "F#3", "C#3"],
-  ["F#3", "A#2", "D#3", "G#3"],
-];
-
-const chords = [
-  ["A#2", "D#3", "F#3", "G#3", "C#4"],
-  ["A#3", "D#4", "F#4", "G#4", "C#5"],
-  ["C#3", "F#3", "G#3", "A#3", "D#4"],
-  ["D#3", "F#3", "A#3", "C#4", "F#4"],
-  ["F#3", "A#3", "C#4", "D#4", "G#4"],
-  ["G#3", "C#4", "D#4", "F#4", "A#4"],
+  ["C#3", "D#3", "E3"],
+  ["F#3", "G#3", "A3"],
+  ["B2", "C#3", "D#3"],
 ];
 
 const markovChainDuration = [
   ["8n", "4n", "2n"],
   ["16n", "8t", "4n"],
   ["1m", "2n", "4n"],
-  ["8t", "4n", "2n"],
 ];
 
 const transitionProbabilities = [
-  [0.5, 0.2, 0.2, 0.1],
-  [0.1, 0.5, 0.2, 0.2],
-  [0.2, 0.1, 0.5, 0.2],
-  [0.1, 0.2, 0.2, 0.5],
+  [0.8, 0.2, 0.0],
+  [0.1, 0.7, 0.2],
+  [0.2, 0.3, 0.5],
 ];
 
 export const MarkovChainSound: FC = () => {
@@ -48,7 +37,7 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
         envelope: {
-          attack: 0.25 * coefficient,
+          attack: 0.125 * coefficient,
           release: 2.5 * coefficient,
         },
         detune: -2,
@@ -63,8 +52,8 @@ export const MarkovChainSound: FC = () => {
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: coefficient,
-        wet: 0.8,
+        decay: 2 * coefficient,
+        wet: 0.75,
       }).toDestination(),
     []
   );
@@ -97,19 +86,17 @@ export const MarkovChainSound: FC = () => {
     const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDuration[durIndex]);
 
-    const selectedChord = chords.find((chord) => chord[0] === rootNote);
-
     const shouldRest = Math.random() > 0.9;
 
-    if (selectedChord && !shouldRest) {
+    if (!shouldRest) {
       synth.triggerAttackRelease(
         // 6add9
         [
           rootNote,
-          Tone.Frequency(selectedChord[1]).toNote(),
-          Tone.Frequency(selectedChord[2]).toNote(),
-          Tone.Frequency(selectedChord[3]).toNote(),
-          Tone.Frequency(selectedChord[4]).toNote(),
+          Tone.Frequency(rootNote).transpose(4).toNote(),
+          Tone.Frequency(rootNote).transpose(7).toNote(),
+          Tone.Frequency(rootNote).transpose(9).toNote(),
+          Tone.Frequency(rootNote).transpose(14).toNote(),
         ],
         nextDur
       );
