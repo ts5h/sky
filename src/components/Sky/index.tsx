@@ -82,7 +82,7 @@ export const Sky: FC = () => {
     }
 
     // Add line noises
-    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.4})`;
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
     ctx.fillRect(0, Math.random() * canvasSize.height, canvasSize.width, 1);
 
     ctx.globalAlpha = 1.0;

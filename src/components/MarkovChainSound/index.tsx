@@ -55,7 +55,7 @@ export const MarkovChainSound: FC = () => {
         modulationIndex: 0.15,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
-        volume: -12,
+        volume: -8,
       }),
     []
   );
@@ -64,7 +64,7 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PingPongDelay({
         delayTime: 0.5 * coefficient,
-        feedback: 0.3,
+        feedback: 0.25,
         wet: 0.25,
       }).toDestination(),
     []
