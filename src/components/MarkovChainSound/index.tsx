@@ -53,7 +53,7 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PingPongDelay({
         delayTime: 0.5 * coefficient,
-        feedback: 0.4,
+        feedback: 0.3,
         wet: 0.25,
       }).toDestination(),
     []
