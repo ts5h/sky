@@ -49,8 +49,9 @@ export const MarkovChainSound: FC = () => {
       new Tone.PolySynth(Tone.FMSynth, {
         envelope: {
           attack: 0.25 * coefficient,
-          release: 2.0 * coefficient,
+          release: 2.5 * coefficient,
         },
+        detune: -2,
         modulationIndex: 0.8,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
@@ -63,7 +64,7 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.Reverb({
         decay: coefficient,
-        wet: 0.85,
+        wet: 0.8,
       }).toDestination(),
     []
   );
