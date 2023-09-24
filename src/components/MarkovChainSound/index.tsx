@@ -8,26 +8,37 @@ import React, {
 } from "react";
 import * as Tone from "tone";
 
-Tone.Transport.bpm.value = 82;
+Tone.Transport.bpm.value = 84;
 const coefficient = 60 / Tone.Transport.bpm.value;
 
-// C# minor
 const markovChainFreq = [
-  ["C#3", "D#3", "E3"],
-  ["F#3", "G#3", "A3"],
-  ["B2", "C#3", "D#3"],
+  ["C#3", "A#2", "F#3", "D#3"],
+  ["F#3", "A#3", "C#4", "D#3"],
+  ["D#3", "A#3", "F#3", "C#3"],
+  ["F#3", "A#2", "D#3", "G#3"],
+];
+
+const chords = [
+  ["A#2", "D#3", "F#3", "G#3", "C#4"],
+  ["A#3", "D#4", "F#4", "G#4", "C#5"],
+  ["C#3", "F#3", "G#3", "A#3", "D#4"],
+  ["D#3", "F#3", "A#3", "C#4", "F#4"],
+  ["F#3", "A#3", "C#4", "D#4", "G#4"],
+  ["G#3", "C#4", "D#4", "F#4", "A#4"],
 ];
 
 const markovChainDuration = [
   ["8n", "4n", "2n"],
   ["16n", "8t", "4n"],
   ["1m", "2n", "4n"],
+  ["8t", "4n", "2n"],
 ];
 
 const transitionProbabilities = [
-  [0.8, 0.2, 0.0],
-  [0.1, 0.7, 0.2],
-  [0.2, 0.3, 0.5],
+  [0.5, 0.2, 0.2, 0.1],
+  [0.1, 0.5, 0.2, 0.2],
+  [0.2, 0.1, 0.5, 0.2],
+  [0.1, 0.2, 0.2, 0.5],
 ];
 
 export const MarkovChainSound: FC = () => {
@@ -43,7 +54,7 @@ export const MarkovChainSound: FC = () => {
         modulationIndex: 0.8,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
-        volume: -1,
+        volume: -0.5,
       }),
     []
   );
@@ -51,11 +62,12 @@ export const MarkovChainSound: FC = () => {
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: 2 * coefficient,
-        wet: 0.9,
+        decay: coefficient,
+        wet: 0.85,
       }).toDestination(),
     []
   );
+
   synth.connect(reverb);
 
   const currentNoteIndex = useRef(0);
@@ -84,17 +96,19 @@ export const MarkovChainSound: FC = () => {
     const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDuration[durIndex]);
 
+    const selectedChord = chords.find((chord) => chord[0] === rootNote);
+
     const shouldRest = Math.random() > 0.9;
 
-    if (!shouldRest) {
+    if (selectedChord && !shouldRest) {
       synth.triggerAttackRelease(
-        // Minor 11th flat 7
+        // 6add9
         [
           rootNote,
-          Tone.Frequency(rootNote).transpose(3).toNote(),
-          Tone.Frequency(rootNote).transpose(7).toNote(),
-          Tone.Frequency(rootNote).transpose(10).toNote(),
-          Tone.Frequency(rootNote).transpose(14).toNote(),
+          Tone.Frequency(selectedChord[1]).toNote(),
+          Tone.Frequency(selectedChord[2]).toNote(),
+          Tone.Frequency(selectedChord[3]).toNote(),
+          Tone.Frequency(selectedChord[4]).toNote(),
         ],
         nextDur
       );
@@ -138,6 +152,7 @@ export const MarkovChainSound: FC = () => {
     <div
       style={{
         position: "absolute",
+        display: isPlaying ? "none" : "block",
         right: "0",
         bottom: "0",
         zIndex: 2,

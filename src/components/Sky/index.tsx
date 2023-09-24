@@ -58,7 +58,7 @@ export const Sky: FC = () => {
       return;
     }
 
-    const repeat = Math.floor(Math.random() * 5) + 1;
+    const repeat = Math.floor(Math.random() * 4) + 1;
     for (let i = 0; i < repeat; i++) {
       const img = selectImage();
       const scale = generateLogNormalRandom(0.1, 0.7) * 0.1;
