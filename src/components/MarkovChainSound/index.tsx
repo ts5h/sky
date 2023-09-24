@@ -37,28 +37,38 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
         envelope: {
-          attack: 0.125 * coefficient,
+          attack: 0.25 * coefficient,
           release: 2.5 * coefficient,
         },
-        detune: -2,
-        modulationIndex: 0.8,
+        detune: 0,
+        modulationIndex: 0.15,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
-        volume: -0.5,
+        volume: -8,
       }),
+    []
+  );
+
+  const delay = useMemo(
+    () =>
+      new Tone.PingPongDelay({
+        delayTime: 0.5 * coefficient,
+        feedback: 0.4,
+        wet: 0.25,
+      }).toDestination(),
     []
   );
 
   const reverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: 2 * coefficient,
+        decay: 0.25 * coefficient,
         wet: 0.75,
       }).toDestination(),
     []
   );
 
-  synth.connect(reverb);
+  synth.connect(delay).connect(reverb);
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
