@@ -18,6 +18,17 @@ const markovChainFreq = [
   ["B2", "C#3", "D#3"],
 ];
 
+// 6add9
+const chords = [
+  ["B2", "D#3", "F#3", "G#3", "C#4"],
+  ["C#3", "F#3", "G#3", "A#3", "D#4"],
+  ["D#3", "F#3", "A#3", "C#4", "F#4"],
+  ["E3", "G#3", "B3", "C#4", "F#4"],
+  ["F#3", "A#3", "C#4", "D#4", "G#4"],
+  ["G#3", "C#4", "D#4", "F#4", "A#4"],
+  ["A3", "C#4", "E4", "F#4", "B4"],
+];
+
 const markovChainDuration = [
   ["8n", "4n", "2n"],
   ["16n", "8t", "4n"],
@@ -25,7 +36,7 @@ const markovChainDuration = [
 ];
 
 const transitionProbabilities = [
-  [0.8, 0.2, 0.0],
+  [0.7, 0.2, 0.1],
   [0.1, 0.7, 0.2],
   [0.2, 0.3, 0.5],
 ];
@@ -37,14 +48,14 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
         envelope: {
-          attack: 0.25 * coefficient,
-          release: 2.5 * coefficient,
+          attack: 0.125 * coefficient,
+          release: 2 * coefficient,
         },
         detune: 0,
         modulationIndex: 0.15,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
-        volume: -8,
+        volume: -12,
       }),
     []
   );
@@ -88,25 +99,24 @@ export const MarkovChainSound: FC = () => {
   }, []);
 
   const playNote = useCallback(() => {
-    if (synth.disposed) return;
-
     const noteIndex = getNextIndex(currentNoteIndex.current);
     const rootNote = choose(markovChainFreq[noteIndex]);
 
     const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDuration[durIndex]);
 
+    const selectedChord = chords.find((chord) => chord[0] === rootNote);
     const shouldRest = Math.random() > 0.9;
 
-    if (!shouldRest) {
+    if (selectedChord && !shouldRest) {
       synth.triggerAttackRelease(
         // 6add9
         [
           rootNote,
-          Tone.Frequency(rootNote).transpose(4).toNote(),
-          Tone.Frequency(rootNote).transpose(7).toNote(),
-          Tone.Frequency(rootNote).transpose(9).toNote(),
-          Tone.Frequency(rootNote).transpose(14).toNote(),
+          selectedChord[1],
+          selectedChord[2],
+          selectedChord[3],
+          selectedChord[4],
         ],
         nextDur
       );
