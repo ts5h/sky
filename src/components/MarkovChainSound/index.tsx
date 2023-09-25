@@ -33,6 +33,7 @@ const transitionProbabilities = [
 export const MarkovChainSound: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Synth
   const synth = useMemo(
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
@@ -69,6 +70,38 @@ export const MarkovChainSound: FC = () => {
   );
 
   synth.connect(delay).connect(reverb);
+
+  // HiHat
+  const hihatOsc = useMemo(
+    () =>
+      new Tone.Oscillator({
+        type: "square",
+        frequency: 2956.0,
+      }),
+    []
+  );
+
+  const hihatEnv = useMemo(
+    () =>
+      new Tone.AmplitudeEnvelope({
+        attack: 0.001,
+        decay: 0.01,
+        sustain: 0,
+        release: 0.2,
+      }),
+    []
+  );
+
+  const hihatPan = useMemo(
+    () =>
+      new Tone.PanVol({
+        pan: 0,
+        volume: -30,
+      }).toDestination(),
+    []
+  );
+
+  hihatOsc.connect(hihatEnv).connect(hihatPan);
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
@@ -120,6 +153,18 @@ export const MarkovChainSound: FC = () => {
     currentDurIndex.current = durIndex;
   }, [getNextIndex]);
 
+  const playHihat = useCallback(() => {
+    if (Math.floor(Math.random() * 8) === 1) {
+      hihatPan.volume.value = -45 + Math.random() * 20;
+      hihatPan.pan.value = Math.random() * 2 - 1;
+      hihatOsc.start();
+      hihatOsc.stop(`+32n`);
+      hihatEnv.triggerAttackRelease("32n");
+    }
+
+    Tone.Transport.scheduleOnce(playHihat, "+32n");
+  }, [hihatEnv, hihatOsc, hihatPan]);
+
   const handleClick = () => {
     if (isPlaying) {
       Tone.Transport.stop();
@@ -130,6 +175,7 @@ export const MarkovChainSound: FC = () => {
           Tone.Transport.start();
           setIsPlaying(true);
           playNote();
+          playHihat();
         })
         .catch((err) => {
           console.log(err);
