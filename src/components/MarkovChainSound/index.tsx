@@ -8,25 +8,14 @@ import React, {
 } from "react";
 import * as Tone from "tone";
 
-Tone.Transport.bpm.value = 84;
+Tone.Transport.bpm.value = 82;
 const coefficient = 60 / Tone.Transport.bpm.value;
 
-// C# minor
+// E melodic minor
 const markovChainFreq = [
-  ["C#3", "D#3", "E3"],
-  ["F#3", "G#3", "A3"],
-  ["B2", "C#3", "D#3"],
-];
-
-// 6add9
-const chords = [
-  ["B2", "D#3", "F#3", "G#3", "C#4"],
-  ["C#3", "F#3", "G#3", "A#3", "D#4"],
-  ["D#3", "F#3", "A#3", "C#4", "F#4"],
-  ["E3", "G#3", "B3", "C#4", "F#4"],
-  ["F#3", "A#3", "C#4", "D#4", "G#4"],
-  ["G#3", "C#4", "D#4", "F#4", "A#4"],
-  ["A3", "C#4", "E4", "F#4", "B4"],
+  ["E3", "F#3", "G3"],
+  ["A3", "B3", "C#4"],
+  ["D#4", "E4", "F#4"],
 ];
 
 const markovChainDuration = [
@@ -105,18 +94,16 @@ export const MarkovChainSound: FC = () => {
     const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDuration[durIndex]);
 
-    const selectedChord = chords.find((chord) => chord[0] === rootNote);
     const shouldRest = Math.random() > 0.9;
 
-    if (selectedChord && !shouldRest) {
+    if (!shouldRest) {
       synth.triggerAttackRelease(
-        // 6add9
+        // 6sus4
         [
           rootNote,
-          selectedChord[1],
-          selectedChord[2],
-          selectedChord[3],
-          selectedChord[4],
+          Tone.Frequency(rootNote).transpose(5).toNote(),
+          Tone.Frequency(rootNote).transpose(7).toNote(),
+          Tone.Frequency(rootNote).transpose(10).toNote(),
         ],
         nextDur
       );
