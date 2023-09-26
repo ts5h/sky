@@ -8,68 +8,100 @@ import React, {
 } from "react";
 import * as Tone from "tone";
 
-Tone.Transport.bpm.value = 84;
+Tone.Transport.bpm.value = 82;
 const coefficient = 60 / Tone.Transport.bpm.value;
 
+// E melodic minor
 const markovChainFreq = [
-  ["C#3", "A#2", "F#3", "D#3"],
-  ["F#3", "A#3", "C#4", "D#3"],
-  ["D#3", "A#3", "F#3", "C#3"],
-  ["F#3", "A#2", "D#3", "G#3"],
-];
-
-const chords = [
-  ["A#2", "D#3", "F#3", "G#3", "C#4"],
-  ["A#3", "D#4", "F#4", "G#4", "C#5"],
-  ["C#3", "F#3", "G#3", "A#3", "D#4"],
-  ["D#3", "F#3", "A#3", "C#4", "F#4"],
-  ["F#3", "A#3", "C#4", "D#4", "G#4"],
-  ["G#3", "C#4", "D#4", "F#4", "A#4"],
+  ["E3", "F#3", "G3"],
+  ["A3", "B3", "C#4"],
+  ["D#4", "E4", "F#4"],
 ];
 
 const markovChainDuration = [
   ["8n", "4n", "2n"],
   ["16n", "8t", "4n"],
   ["1m", "2n", "4n"],
-  ["8t", "4n", "2n"],
 ];
 
 const transitionProbabilities = [
-  [0.5, 0.2, 0.2, 0.1],
-  [0.1, 0.5, 0.2, 0.2],
-  [0.2, 0.1, 0.5, 0.2],
-  [0.1, 0.2, 0.2, 0.5],
+  [0.7, 0.2, 0.1],
+  [0.1, 0.7, 0.2],
+  [0.2, 0.3, 0.5],
 ];
 
 export const MarkovChainSound: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Synth
   const synth = useMemo(
     () =>
       new Tone.PolySynth(Tone.FMSynth, {
         envelope: {
-          attack: 0.25 * coefficient,
-          release: 2.5 * coefficient,
+          attack: 0.125 * coefficient,
+          release: 2 * coefficient,
         },
-        detune: -2,
-        modulationIndex: 0.8,
+        detune: -12,
+        modulationIndex: 0.4,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
-        volume: -0.5,
+        volume: -8,
       }),
-    []
+    [],
   );
 
-  const reverb = useMemo(
+  const synthDelay = useMemo(
+    () =>
+      new Tone.PingPongDelay({
+        delayTime: 0.5 * coefficient,
+        feedback: 0.25,
+        wet: 0.25,
+      }).toDestination(),
+    [],
+  );
+
+  const synthReverb = useMemo(
     () =>
       new Tone.Reverb({
-        decay: coefficient,
-        wet: 0.8,
+        decay: 0.25 * coefficient,
+        wet: 0.75,
       }).toDestination(),
-    []
+    [],
   );
 
-  synth.connect(reverb);
+  synth.connect(synthDelay).connect(synthReverb);
+
+  // HiHat
+  const hihatOsc = useMemo(
+    () =>
+      new Tone.Oscillator({
+        type: "square",
+        frequency: 2850.0,
+      }),
+    [],
+  );
+
+  const hihatEnv = useMemo(
+    () =>
+      new Tone.AmplitudeEnvelope({
+        attack: 0.001,
+        decay: 0.01,
+        sustain: 0,
+        release: 0.1,
+      }),
+    [],
+  );
+
+  const hihatPan = useMemo(
+    () =>
+      new Tone.PanVol({
+        pan: 0,
+        volume: -30,
+      }).toDestination(),
+    [],
+  );
+
+  hihatOsc.connect(hihatEnv).connect(hihatPan);
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
@@ -82,49 +114,56 @@ export const MarkovChainSound: FC = () => {
   const getNextIndex = useCallback((currentIndex: number): number => {
     const rand = Math.random();
     const cdf = transitionProbabilities[currentIndex].map((p, i, arr) =>
-      arr.slice(0, i + 1).reduce((acc, val) => acc + val)
+      arr.slice(0, i + 1).reduce((acc, val) => acc + val),
     );
 
     return cdf.findIndex((p) => rand < p);
   }, []);
 
   const playNote = useCallback(() => {
-    if (synth.disposed) return;
-
     const noteIndex = getNextIndex(currentNoteIndex.current);
     const rootNote = choose(markovChainFreq[noteIndex]);
 
     const durIndex = getNextIndex(currentDurIndex.current);
     const nextDur = choose(markovChainDuration[durIndex]);
 
-    const selectedChord = chords.find((chord) => chord[0] === rootNote);
-
     const shouldRest = Math.random() > 0.9;
 
-    if (selectedChord && !shouldRest) {
+    if (!shouldRest) {
       synth.triggerAttackRelease(
-        // 6add9
+        // 6sus4
         [
           rootNote,
-          Tone.Frequency(selectedChord[1]).toNote(),
-          Tone.Frequency(selectedChord[2]).toNote(),
-          Tone.Frequency(selectedChord[3]).toNote(),
-          Tone.Frequency(selectedChord[4]).toNote(),
+          Tone.Frequency(rootNote).transpose(5).toNote(),
+          Tone.Frequency(rootNote).transpose(7).toNote(),
+          Tone.Frequency(rootNote).transpose(10).toNote(),
         ],
-        nextDur
+        nextDur,
       );
     }
 
     if (Tone.Transport.state === "started") {
       Tone.Transport.scheduleOnce(
         playNote,
-        `+${Tone.Time(nextDur).toSeconds()}`
+        `+${Tone.Time(nextDur).toSeconds()}`,
       );
     }
 
     currentNoteIndex.current = noteIndex;
     currentDurIndex.current = durIndex;
   }, [getNextIndex]);
+
+  const playHihat = useCallback(() => {
+    if (Math.floor(Math.random() * 10) === 1) {
+      hihatPan.volume.value = -45 + Math.random() * 20;
+      hihatPan.pan.value = Math.random() * 2 - 1;
+      hihatOsc.start();
+      hihatOsc.stop(`+32n`);
+      hihatEnv.triggerAttackRelease("32n");
+    }
+
+    Tone.Transport.scheduleOnce(playHihat, "+32n");
+  }, []);
 
   const handleClick = () => {
     if (isPlaying) {
@@ -136,6 +175,7 @@ export const MarkovChainSound: FC = () => {
           Tone.Transport.start();
           setIsPlaying(true);
           playNote();
+          playHihat();
         })
         .catch((err) => {
           console.log(err);

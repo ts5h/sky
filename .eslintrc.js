@@ -68,6 +68,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
     'no-plusplus': 'off',
     'react/jsx-no-useless-fragment': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
   settings: {
     'import/resolver': {

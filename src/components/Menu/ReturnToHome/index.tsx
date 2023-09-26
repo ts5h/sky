@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
-import Styles from "../../scss/ReturnToHome.module.scss";
+import Styles from "../../../scss/ReturnToHome.module.scss";
 
 export const ReturnToHome: FC = () => {
   const [isHovered, setIsHovered] = useState(false);
