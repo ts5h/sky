@@ -77,7 +77,7 @@ export const Sky: FC = () => {
         Math.random() * (windowSize.width + 50) - 25,
         Math.random() * (windowSize.height + 50) - 25,
         img.width * scale,
-        img.height * scale
+        img.height * scale,
       );
     }
 

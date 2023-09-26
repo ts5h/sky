@@ -47,7 +47,7 @@ export const MarkovChainSound: FC = () => {
         portamento: 0.125 * coefficient,
         volume: -8,
       }),
-    []
+    [],
   );
 
   const synthDelay = useMemo(
@@ -57,7 +57,7 @@ export const MarkovChainSound: FC = () => {
         feedback: 0.25,
         wet: 0.25,
       }).toDestination(),
-    []
+    [],
   );
 
   const synthReverb = useMemo(
@@ -66,7 +66,7 @@ export const MarkovChainSound: FC = () => {
         decay: 0.25 * coefficient,
         wet: 0.75,
       }).toDestination(),
-    []
+    [],
   );
 
   synth.connect(synthDelay).connect(synthReverb);
@@ -78,7 +78,7 @@ export const MarkovChainSound: FC = () => {
         type: "square",
         frequency: 2850.0,
       }),
-    []
+    [],
   );
 
   const hihatEnv = useMemo(
@@ -89,7 +89,7 @@ export const MarkovChainSound: FC = () => {
         sustain: 0,
         release: 0.1,
       }),
-    []
+    [],
   );
 
   const hihatPan = useMemo(
@@ -98,7 +98,7 @@ export const MarkovChainSound: FC = () => {
         pan: 0,
         volume: -30,
       }).toDestination(),
-    []
+    [],
   );
 
   hihatOsc.connect(hihatEnv).connect(hihatPan);
@@ -114,7 +114,7 @@ export const MarkovChainSound: FC = () => {
   const getNextIndex = useCallback((currentIndex: number): number => {
     const rand = Math.random();
     const cdf = transitionProbabilities[currentIndex].map((p, i, arr) =>
-      arr.slice(0, i + 1).reduce((acc, val) => acc + val)
+      arr.slice(0, i + 1).reduce((acc, val) => acc + val),
     );
 
     return cdf.findIndex((p) => rand < p);
@@ -138,14 +138,14 @@ export const MarkovChainSound: FC = () => {
           Tone.Frequency(rootNote).transpose(7).toNote(),
           Tone.Frequency(rootNote).transpose(10).toNote(),
         ],
-        nextDur
+        nextDur,
       );
     }
 
     if (Tone.Transport.state === "started") {
       Tone.Transport.scheduleOnce(
         playNote,
-        `+${Tone.Time(nextDur).toSeconds()}`
+        `+${Tone.Time(nextDur).toSeconds()}`,
       );
     }
 
