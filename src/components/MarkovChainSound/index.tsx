@@ -76,7 +76,7 @@ export const MarkovChainSound: FC = () => {
     () =>
       new Tone.Oscillator({
         type: "square",
-        frequency: 2956.0,
+        frequency: 2850.0,
       }),
     []
   );
@@ -155,7 +155,7 @@ export const MarkovChainSound: FC = () => {
 
   const playHihat = useCallback(() => {
     if (Math.floor(Math.random() * 8) === 1) {
-      hihatPan.volume.value = -50 + Math.random() * 20;
+      hihatPan.volume.value = -45 + Math.random() * 20;
       hihatPan.pan.value = Math.random() * 2 - 1;
       hihatOsc.start();
       hihatOsc.stop(`+32n`);
