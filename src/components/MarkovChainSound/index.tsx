@@ -50,7 +50,7 @@ export const MarkovChainSound: FC = () => {
     []
   );
 
-  const delay = useMemo(
+  const synthDelay = useMemo(
     () =>
       new Tone.PingPongDelay({
         delayTime: 0.5 * coefficient,
@@ -60,7 +60,7 @@ export const MarkovChainSound: FC = () => {
     []
   );
 
-  const reverb = useMemo(
+  const synthReverb = useMemo(
     () =>
       new Tone.Reverb({
         decay: 0.25 * coefficient,
@@ -69,7 +69,7 @@ export const MarkovChainSound: FC = () => {
     []
   );
 
-  synth.connect(delay).connect(reverb);
+  synth.connect(synthDelay).connect(synthReverb);
 
   // HiHat
   const hihatOsc = useMemo(
@@ -163,7 +163,7 @@ export const MarkovChainSound: FC = () => {
     }
 
     Tone.Transport.scheduleOnce(playHihat, "+32n");
-  }, [hihatEnv, hihatOsc, hihatPan]);
+  }, []);
 
   const handleClick = () => {
     if (isPlaying) {
