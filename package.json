@@ -1,6 +1,7 @@
 {
   "name": "sky",
-  "version": "0.1.0",
+  "homepage": "./",
+  "version": "0.9.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.1.3",
