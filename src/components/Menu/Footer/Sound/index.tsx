@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { isIOS, isMobile } from "react-device-detect";
+import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useAtom } from "jotai";
 import { audioContextAtom, soundFlagAtom } from "../../../../store/Atoms";
 import { SoundOff, SoundOn } from "../../../../icons";
@@ -22,7 +22,7 @@ export const MenuSound: FC = () => {
     if (!isMobile) return;
     setIsHover(state);
 
-    if (isIOS && isFirstTouch) {
+    if ((isAndroid || isIOS) && isFirstTouch) {
       const source = audioContext.createBufferSource();
       source.buffer = audioContext.createBuffer(1, 1, 22500);
       source.onended = () => source.disconnect();

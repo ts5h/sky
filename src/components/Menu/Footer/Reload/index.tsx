@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { isIOS, isMobile } from "react-device-detect";
+import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { Reload } from "../../../../icons";
 import Styles from "../../../../scss/Footer.module.scss";
 
@@ -20,7 +20,7 @@ export const MenuReload: FC = () => {
     window.location.reload();
   };
 
-  if (isIOS) {
+  if (isIOS || isAndroid) {
     return null;
   }
 
