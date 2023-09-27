@@ -193,9 +193,8 @@ export const MarkovChainSound: FC = () => {
     <div
       style={{
         position: "absolute",
-        display: isPlaying ? "none" : "block",
-        right: "0",
-        bottom: "0",
+        right: "100px",
+        bottom: "100px",
         zIndex: 2,
       }}
     >
