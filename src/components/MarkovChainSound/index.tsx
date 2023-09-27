@@ -186,8 +186,6 @@ export const MarkovChainSound: FC = () => {
   useEffect(() => {
     return () => {
       Tone.Transport.stop();
-      if (synth) synth.dispose();
-      if (hihatOsc) hihatOsc.dispose();
     };
   }, []);
 
