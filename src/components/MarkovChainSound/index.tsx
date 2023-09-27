@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 import * as Tone from "tone";
+import { useAtom } from "jotai";
+import { soundFlagAtom } from "../../store/Atoms";
 
 Tone.Transport.bpm.value = 82;
 const coefficient = 60 / Tone.Transport.bpm.value;
@@ -31,7 +33,7 @@ const transitionProbabilities = [
 ];
 
 export const MarkovChainSound: FC = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying] = useAtom(soundFlagAtom);
 
   // Synth
   const synth = useMemo(
@@ -165,42 +167,29 @@ export const MarkovChainSound: FC = () => {
     Tone.Transport.scheduleOnce(playHihat, "+32n");
   }, []);
 
-  const handleClick = () => {
+  useEffect(() => {
     if (isPlaying) {
-      Tone.Transport.stop();
-      setIsPlaying(false);
-    } else {
       Tone.start()
         .then(() => {
           Tone.Transport.start();
-          setIsPlaying(true);
           playNote();
           playHihat();
         })
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      Tone.Transport.stop();
     }
-  };
+  }, [isPlaying, playNote, playHihat]);
 
   useEffect(() => {
     return () => {
       Tone.Transport.stop();
+      if (synth) synth.dispose();
+      if (hihatOsc) hihatOsc.dispose();
     };
   }, []);
 
-  return (
-    <div
-      style={{
-        position: "absolute",
-        right: "100px",
-        bottom: "100px",
-        zIndex: 2,
-      }}
-    >
-      <button type="button" onClick={handleClick}>
-        {isPlaying ? "Stop" : "Start"}
-      </button>
-    </div>
-  );
+  return null;
 };

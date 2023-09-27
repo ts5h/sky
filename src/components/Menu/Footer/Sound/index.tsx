@@ -8,7 +8,8 @@ import Styles from "../../../../scss/Footer.module.scss";
 export const MenuSound: FC = () => {
   const [audioContext, setAudioContext] =
     useAtom<AudioContext>(audioContextAtom);
-  const [isSound, setIsSound] = useAtom(soundFlagAtom);
+  const [isPlaying, setIsPlaying] = useAtom(soundFlagAtom);
+
   const [isHover, setIsHover] = useState(false);
   const [isFirstTouch, setIsFirstTouch] = useState(true);
 
@@ -35,7 +36,7 @@ export const MenuSound: FC = () => {
   };
 
   const handleClick = () => {
-    setIsSound((prev) => !prev);
+    setIsPlaying((prev) => !prev);
   };
 
   return (
@@ -52,7 +53,7 @@ export const MenuSound: FC = () => {
       title="Sound"
     >
       <span className={Styles.icon}>
-        {isSound ? <SoundOn /> : <SoundOff />}
+        {isPlaying ? <SoundOn /> : <SoundOff />}
       </span>
     </button>
   );
