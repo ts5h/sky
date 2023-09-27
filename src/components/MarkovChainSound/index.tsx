@@ -1,12 +1,6 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import * as Tone from "tone";
+import { isMobile } from "react-device-detect";
 import { useAtom } from "jotai";
 import { soundFlagAtom } from "../../store/Atoms";
 
@@ -155,9 +149,10 @@ export const MarkovChainSound: FC = () => {
     currentDurIndex.current = durIndex;
   }, [getNextIndex]);
 
+  const baseDb = useMemo(() => (isMobile ? -60 : -47), []);
   const playHihat = useCallback(() => {
     if (Math.floor(Math.random() * 8) === 1) {
-      hihatPan.volume.value = -47 + Math.random() * 20;
+      hihatPan.volume.value = baseDb + Math.random() * 20;
       hihatPan.pan.value = Math.random() * 2 - 1;
       hihatOsc.start();
       hihatOsc.stop(`+32n`);
