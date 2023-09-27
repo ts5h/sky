@@ -18,6 +18,7 @@ specifiers:
   eslint-plugin-react: ^7.33.2
   eslint-plugin-react-hooks: ^4.6.0
   husky: ^8.0.3
+  jotai: ^2.4.3
   lint-staged: ^14.0.1
   prettier: ^3.0.3
   react: ^18.2.0
@@ -38,6 +39,7 @@ dependencies:
   '@types/node': 20.6.2
   '@types/react': 18.2.21
   '@types/react-dom': 18.2.7
+  jotai: 2.4.3_gq4reeurwxuj4hvyerswzzqthy
   react: 18.2.0
   react-device-detect: 2.2.3_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
@@ -6951,6 +6953,22 @@ packages:
   /jiti/1.20.0:
     resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
     hasBin: true
+    dev: false
+
+  /jotai/2.4.3_gq4reeurwxuj4hvyerswzzqthy:
+    resolution: {integrity: sha512-CSAHX9LqWG5WCrU8OgBoZbBJ+Bo9rQU0mPusEF4e0CZ/SNFgurG26vb3UpgvCSJZgYVcUQNiUBM5q86PA8rstQ==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.21
+      react: 18.2.0
     dev: false
 
   /js-tokens/4.0.0:

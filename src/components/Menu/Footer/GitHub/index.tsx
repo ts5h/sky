@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { isIOS, isMobile } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import { AiFillGithub } from "react-icons/ai";
 import Styles from "../../../../scss/Footer.module.scss";
 
