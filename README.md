@@ -7,7 +7,7 @@ Random images clopping and playing drone sounds.
 ## Basic Usage
 ### Install & Run
 ```shell
-$ git clone git@github.com:ts5h/react-minimum-boilerplate.git
+$ git clone git@github.com:ts5h/sky.git
 $ pnpm install
 $ pnpm start
 ```
