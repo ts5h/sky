@@ -38,7 +38,7 @@ export const MarkovChainSound: FC = () => {
           release: 2 * coefficient,
         },
         detune: -12,
-        modulationIndex: 0.4,
+        modulationIndex: 0.3,
         harmonicity: 2,
         portamento: 0.125 * coefficient,
         volume: -8,
@@ -168,7 +168,7 @@ export const MarkovChainSound: FC = () => {
         .then(() => {
           Tone.Transport.start();
           playNote();
-          playHihat();
+          Tone.Transport.scheduleOnce(playHihat, 0.18 * coefficient);
         })
         .catch((err) => {
           console.log(err);
