@@ -1,7 +1,7 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from "react";
-import * as Tone from "tone";
-import { isMobile } from "react-device-detect";
 import { useAtom } from "jotai";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { isMobile } from "react-device-detect";
+import * as Tone from "tone";
 import { soundFlagAtom } from "../../store/Atoms";
 
 Tone.Transport.bpm.value = 82;
@@ -68,15 +68,6 @@ export const MarkovChainSound: FC = () => {
   synth.connect(synthDelay).connect(synthReverb);
 
   // HiHat
-  const hihatOsc = useMemo(
-    () =>
-      new Tone.Oscillator({
-        type: "square",
-        frequency: 2850.0,
-      }),
-    [],
-  );
-
   const hihatEnv = useMemo(
     () =>
       new Tone.AmplitudeEnvelope({
@@ -97,7 +88,7 @@ export const MarkovChainSound: FC = () => {
     [],
   );
 
-  hihatOsc.connect(hihatEnv).connect(hihatPan);
+  hihatEnv.connect(hihatPan);
 
   const currentNoteIndex = useRef(0);
   const currentDurIndex = useRef(0);
@@ -109,7 +100,7 @@ export const MarkovChainSound: FC = () => {
 
   const getNextIndex = useCallback((currentIndex: number): number => {
     const rand = Math.random();
-    const cdf = transitionProbabilities[currentIndex].map((p, i, arr) =>
+    const cdf = transitionProbabilities[currentIndex].map((_p, i, arr) =>
       arr.slice(0, i + 1).reduce((acc, val) => acc + val),
     );
 
@@ -154,13 +145,20 @@ export const MarkovChainSound: FC = () => {
     if (Math.floor(Math.random() * 8) === 1) {
       hihatPan.volume.value = baseDb + Math.random() * 20;
       hihatPan.pan.value = Math.random() * 2 - 1;
+      
+      // Create a new oscillator instance each time to avoid the "start time" error
+      const hihatOsc = new Tone.Oscillator({
+        type: "square",
+        frequency: 2850.0,
+      }).connect(hihatEnv);
+      
       hihatOsc.start();
       hihatOsc.stop(`+32n`);
       hihatEnv.triggerAttackRelease("32n");
     }
 
     Tone.Transport.scheduleOnce(playHihat, "+32n");
-  }, []);
+  }, [baseDb, hihatEnv]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -176,7 +174,7 @@ export const MarkovChainSound: FC = () => {
     } else {
       Tone.Transport.stop();
     }
-  }, [isPlaying, playNote, playHihat]);
+  }, [isPlaying, playNote, playHihat, coefficient]);
 
   useEffect(() => {
     return () => {

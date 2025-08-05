@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { MenuSound } from "./Sound";
-import { MenuReload } from "./Reload";
-import { MenuGitHub } from "./GitHub";
+import { FC } from "react";
 import Styles from "../../../scss/Footer.module.scss";
+import { MenuGitHub } from "./GitHub";
+import { MenuReload } from "./Reload";
+import { MenuSound } from "./Sound";
 
 export const Footer: FC = () => {
   return (

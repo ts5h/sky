@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useRef } from "react";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { useImages } from "../../hooks/useImages";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 type CloppedImage = {
   image: HTMLImageElement;
