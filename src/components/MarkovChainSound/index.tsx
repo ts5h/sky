@@ -1,7 +1,7 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from "react";
-import * as Tone from "tone";
-import { isMobile } from "react-device-detect";
 import { useAtom } from "jotai";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { isMobile } from "react-device-detect";
+import * as Tone from "tone";
 import { soundFlagAtom } from "../../store/Atoms";
 
 Tone.Transport.bpm.value = 82;

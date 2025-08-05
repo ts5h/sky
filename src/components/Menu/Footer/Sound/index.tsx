@@ -1,9 +1,9 @@
+import { useAtom } from "jotai";
 import React, { FC, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
-import { useAtom } from "jotai";
-import { audioContextAtom, soundFlagAtom } from "../../../../store/Atoms";
 import { SoundOff, SoundOn } from "../../../../icons";
 import Styles from "../../../../scss/Footer.module.scss";
+import { audioContextAtom, soundFlagAtom } from "../../../../store/Atoms";
 
 export const MenuSound: FC = () => {
   const [audioContext, setAudioContext] =
