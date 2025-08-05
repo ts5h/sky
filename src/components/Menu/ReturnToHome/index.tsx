@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
 import Styles from "../../../scss/ReturnToHome.module.scss";
 

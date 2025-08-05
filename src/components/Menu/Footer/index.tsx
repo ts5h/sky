@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Styles from "../../../scss/Footer.module.scss";
 import { MenuGitHub } from "./GitHub";
 import { MenuReload } from "./Reload";

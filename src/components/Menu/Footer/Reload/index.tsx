@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { Reload } from "../../../../icons";
 import Styles from "../../../../scss/Footer.module.scss";

@@ -1,4 +1,3 @@
-import React from "react";
 import { MarkovChainSound } from "./components/MarkovChainSound";
 import { Footer } from "./components/Menu/Footer";
 import { ReturnToHome } from "./components/Menu/ReturnToHome";
